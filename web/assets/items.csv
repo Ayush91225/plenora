@@ -1,0 +1,138 @@
+Website Type,Section
+General / Business Website,Home
+General / Business Website,About Us / Company Profile
+General / Business Website,"Mission, Vision & Values"
+General / Business Website,Services / Products
+General / Business Website,Case Studies / Portfolio
+General / Business Website,Testimonials / Reviews
+General / Business Website,Blog / News
+General / Business Website,Careers / Jobs
+General / Business Website,FAQ
+General / Business Website,"Contact (Form, Address, Map, Social Links)"
+General / Business Website,"Legal (Privacy Policy, Terms & Conditions, Cookie Policy, Accessibility Statement)"
+E-commerce / Online Store,"Home (Featured Products, Offers)"
+E-commerce / Online Store,Shop / Categories
+E-commerce / Online Store,Product Detail Pages
+E-commerce / Online Store,Search & Filters
+E-commerce / Online Store,Wishlist / Favorites
+E-commerce / Online Store,Shopping Cart
+E-commerce / Online Store,"Checkout (Shipping, Payment, Review Order)"
+E-commerce / Online Store,Order Confirmation / Thank You
+E-commerce / Online Store,"User Account (Login/Register, Profile, Addresses, Order History)"
+E-commerce / Online Store,"Support (FAQ, Live Chat, Returns & Refunds)"
+E-commerce / Online Store,Blog (Optional)
+E-commerce / Online Store,"Policies (Return Policy, Shipping Info, Privacy, Terms)"
+Portfolio / Personal Website,"Home (Hero Section, Introduction)"
+Portfolio / Personal Website,Portfolio / Gallery
+Portfolio / Personal Website,Case Studies / Project Details
+Portfolio / Personal Website,About / Bio
+Portfolio / Personal Website,Skills / Expertise
+Portfolio / Personal Website,Resume / CV Download
+Portfolio / Personal Website,Testimonials / References
+Portfolio / Personal Website,Blog / Updates
+Portfolio / Personal Website,"Contact (Form, Email, Social Links)"
+Agency / Professional Services,Home
+Agency / Professional Services,Services / What We Do
+Agency / Professional Services,Industries / Solutions
+Agency / Professional Services,Portfolio / Case Studies
+Agency / Professional Services,Team / Leadership
+Agency / Professional Services,Clients / Partners
+Agency / Professional Services,Testimonials / Reviews
+Agency / Professional Services,Blog / Insights
+Agency / Professional Services,Careers
+Agency / Professional Services,Contact
+Event / Conference Website,"Home (Event Overview, Date & Location)"
+Event / Conference Website,Agenda / Schedule
+Event / Conference Website,Speakers / Performers
+Event / Conference Website,Tickets / Registration
+Event / Conference Website,Venue / Travel Information
+Event / Conference Website,Sponsors / Partners
+Event / Conference Website,News / Updates
+Event / Conference Website,Gallery (Past Events)
+Event / Conference Website,FAQ
+Event / Conference Website,Contact
+Restaurant / Bakery / Café Website,"Home (Hero with Food Image, Specials)"
+Restaurant / Bakery / Café Website,Menu / Products
+Restaurant / Bakery / Café Website,Online Ordering / Delivery
+Restaurant / Bakery / Café Website,About / Our Story
+Restaurant / Bakery / Café Website,"Gallery (Food, Interior)"
+Restaurant / Bakery / Café Website,Testimonials / Reviews
+Restaurant / Bakery / Café Website,Events / Catering Services
+Restaurant / Bakery / Café Website,Blog / Recipes (Optional)
+Restaurant / Bakery / Café Website,"Contact & Location (Map, Hours, Phone)"
+Non-Profit / Charity Website,"Home (Mission Highlight, Current Campaigns)"
+Non-Profit / Charity Website,About / Mission & Vision
+Non-Profit / Charity Website,Programs / Our Work
+Non-Profit / Charity Website,Impact Stories
+Non-Profit / Charity Website,"Donate (Form, One-Time, Recurring)"
+Non-Profit / Charity Website,"Get Involved (Volunteer, Membership, Partnerships)"
+Non-Profit / Charity Website,Events / Fundraisers
+Non-Profit / Charity Website,Blog / News / Success Stories
+Non-Profit / Charity Website,"Contact (Staff Directory, Offices)"
+Non-Profit / Charity Website,"Policies (Transparency, Annual Reports, Privacy)"
+SaaS / Tech Product Website,"Home (Value Proposition, CTA)"
+SaaS / Tech Product Website,Features / Capabilities
+SaaS / Tech Product Website,How It Works / Demo
+SaaS / Tech Product Website,Pricing Plans
+SaaS / Tech Product Website,Use Cases / Industries
+SaaS / Tech Product Website,Case Studies / Testimonials
+SaaS / Tech Product Website,"Blog / Resources (Articles, Guides)"
+SaaS / Tech Product Website,Documentation / API Docs
+SaaS / Tech Product Website,About / Company
+SaaS / Tech Product Website,Careers
+SaaS / Tech Product Website,"Support (Help Center, FAQ, Live Chat)"
+SaaS / Tech Product Website,"Contact (Form, Sales, Support)"
+SaaS / Tech Product Website,Login / Sign Up
+Blog / Media / Personal Journal,Home (Latest Posts)
+Blog / Media / Personal Journal,Blog / Article Listings
+Blog / Media / Personal Journal,Categories / Tags
+Blog / Media / Personal Journal,Single Post Pages
+Blog / Media / Personal Journal,About the Author
+Blog / Media / Personal Journal,Newsletter Signup
+Blog / Media / Personal Journal,Resources / Downloads
+Blog / Media / Personal Journal,Contact
+Blog / Media / Personal Journal,Advertise / Work With Me (Optional)
+Blog / Media / Personal Journal,Privacy Policy & Disclaimers
+Education / School / University,"Home (Announcements, Highlights)"
+Education / School / University,"About (History, Vision)"
+Education / School / University,Programs / Courses
+Education / School / University,Admissions / How to Apply
+Education / School / University,Faculty / Staff Directory
+Education / School / University,Departments / Research Centers
+Education / School / University,Student Life / Campus Life
+Education / School / University,Facilities / Virtual Tour
+Education / School / University,Events / Calendar
+Education / School / University,News / Blog
+Education / School / University,Alumni / Success Stories
+Education / School / University,Careers
+Education / School / University,Contact
+Healthcare / Medical Website,Home
+Healthcare / Medical Website,About / Our Clinic / Hospital
+Healthcare / Medical Website,Services / Treatments
+Healthcare / Medical Website,Doctors / Practitioners (Profiles)
+Healthcare / Medical Website,Appointment Booking
+Healthcare / Medical Website,"Patient Resources (Forms, FAQs, Insurance Info)"
+Healthcare / Medical Website,Blog / Health Tips
+Healthcare / Medical Website,Testimonials
+Healthcare / Medical Website,"Contact (Location, Hours, Emergency Info)"
+Real Estate Website,Home (Featured Properties)
+Real Estate Website,Listings / Search Properties
+Real Estate Website,"Individual Property Pages (Photos, Price, Details)"
+Real Estate Website,Agents / Brokers Profiles
+Real Estate Website,About the Agency
+Real Estate Website,"Blog (Market Trends, Advice)"
+Real Estate Website,"Contact (Office Locations, Inquiry Form)"
+Community / Forum Website,Home / Dashboard
+Community / Forum Website,Forum Categories
+Community / Forum Website,Threads / Topics
+Community / Forum Website,User Profiles
+Community / Forum Website,Private Messaging
+Community / Forum Website,Rules / Guidelines
+Community / Forum Website,Moderation / Report Section
+Community / Forum Website,FAQ / Help Center
+Universal Sections,"Header (Logo, Navigation, Search, CTA)"
+Universal Sections,Hero Section
+Universal Sections,Call-to-Action Sections (scattered across pages)
+Universal Sections,Newsletter Signup / Lead Capture
+Universal Sections,Social Media Links / Feed
+Universal Sections,"Footer (Quick Links, Contact, Policies, Copyright)"

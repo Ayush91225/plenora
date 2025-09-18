@@ -1,0 +1,149 @@
+/**
+ * ============================================================================
+ * PLENORA - AI-POWERED WEBSITE BUILDER
+ * ============================================================================
+ * 
+ * @file        css2.css
+ * @version     1.0.0
+ * @description Core stylesheet for Plenora website builder interface
+ * @author      Navchetna
+ * @company     NINELLMS SOLUTIONS LLP
+ * @collaboration Tantrix Solutions OPC PVT LTD
+ * @created     2024
+ * 
+ * ============================================================================
+ * COPYRIGHT & LICENSE INFORMATION
+ * ============================================================================
+ * 
+ * Copyright (c) 2024 NINELLMS SOLUTIONS LLP
+ * Developed by Navchetna for Tantrix Solutions OPC PVT LTD
+ * 
+ * This software is proprietary and confidential. Unauthorized copying of this
+ * file, via any medium, is strictly prohibited. This software is licensed under
+ * a commercial license agreement and may not be used, modified, or distributed
+ * without explicit written permission from the copyright holder.
+ * 
+ * TERMS OF USE:
+ * - This software is provided "as is" without warranty of any kind
+ * - Commercial use requires valid license agreement
+ * - Reverse engineering is strictly prohibited
+ * - Distribution without authorization is illegal
+ * 
+ * For licensing inquiries, contact:
+ * NINELLMS SOLUTIONS LLP
+ * Email: legal@navchetna.tech
+ * 
+ * ============================================================================
+ * TECHNICAL SPECIFICATIONS
+ * ============================================================================
+ * 
+ * Dependencies: TailwindCSS (CDN)
+ * Browser Support: Modern browsers (CSS3+)
+ * Performance: Optimized for real-time rendering
+ * Design System: Glassmorphic dark theme with minimal aesthetics
+ * 
+ * ============================================================================
+ */
+
+/**
+ * Base Application Styles
+ * Establishes foundational styling for the entire application
+ * Implements dark theme with gradient backgrounds and custom cursor
+ */
+body {
+    background: #000000;
+    min-height: 100vh;
+
+}
+
+/**
+ * Mobile Device Restriction Interface
+ * Implements full-screen overlay for mobile device blocking
+ * Provides professional access restriction messaging
+ */
+.mobile-block {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+/**
+ * Mobile Restriction Card Component
+ * Glassmorphic design with backdrop blur effects
+ * Maintains brand consistency in restriction messaging
+ */
+.mobile-card {
+    background: rgba(23, 23, 23, 0.8);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 3rem 2rem;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/**
+ * Responsive Design Breakpoints
+ * Enforces desktop-only access through media queries
+ * Implements progressive enhancement for larger screens
+ */
+@media (max-width: 1024px) {
+    .mobile-block {
+        display: flex;
+    }
+
+    .desktop-content {
+        display: none !important;
+    }
+}
+
+/**
+ * Custom Scrollbar Implementation
+ * Minimal scrollbar design for enhanced user experience
+ * Maintains visual consistency across all scrollable elements
+ */
+*, *::before, *::after, iframe, iframe * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/**
+ * Canvas Grid Background System
+ * Implements subtle grid overlay for design workspace
+ * Provides visual alignment guides for content placement
+ */
+#design-canvas {
+    background-image: 
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 20px 20px;
+}

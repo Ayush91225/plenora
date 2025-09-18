@@ -1,0 +1,320 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plenora | Login</title>
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        #vanta-canvas {
+            overflow: hidden;
+        }
+
+        .card-container {
+            position: relative;
+            z-index: 0;
+        }
+
+        .card-container::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            background: linear-gradient(to bottom right, #525252, transparent, #262626);
+            border-radius: 0.75rem;
+            z-index: -1;
+        }
+
+        .card-content {
+            border-radius: 0.75rem;
+            overflow: hidden;
+            background: #171717;
+        }
+
+        .divider-gradient {
+            height: 1px;
+            background: linear-gradient(to right, transparent, #525252, transparent);
+        }
+
+        .mobile-block {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .mobile-card {
+            background: rgba(23, 23, 23, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            padding: 3rem 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+
+
+        @media (max-width: 1024px) {
+            .mobile-block {
+                display: flex;
+            }
+
+            .desktop-content {
+                display: none !important;
+            }
+        }
+    </style>
+
+</head>
+
+<body
+    class="antialiased bg-zinc-950 text-zinc-100 font-sans selection:bg-indigo-500/30 min-h-screen flex items-center justify-center"
+    style="font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;">
+
+    <div class="mobile-block">
+        <div class="mobile-card">
+            <div class="mb-6">
+                <div class="w-20 h-20 mx-auto mb-4 bg-zinc-900 rounded-full flex items-center justify-center">
+                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                </div>
+                <span
+                    class="px-3 py-1 bg-red-500/20 text-red-400 rounded-full text-xs font-medium mb-4 inline-block">ACCESS
+                    RESTRICTED</span>
+            </div>
+
+            <h1 class="text-3xl font-bold text-white mb-3">Desktop Required</h1>
+            <p class="text-zinc-400 mb-6 leading-relaxed">This secure portal is optimized for desktop environments only.
+                Please access from a computer with a screen resolution of 1024px or higher.</p>
+
+            <div class="space-y-3">
+                <div class="flex items-center text-sm text-zinc-500">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Enhanced security features
+                </div>
+                <div class="flex items-center text-sm text-zinc-500">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Optimized user experience
+                </div>
+                <div class="flex items-center text-sm text-zinc-500">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Full feature compatibility
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="desktop-content">
+        <div class="spline-container fixed top-0 w-full h-screen -z-10">
+            <iframe src="https://my.spline.design/3dgradient-AcpgG6LxFkpnJSoowRHPfcbO" frameborder="0" width="100%"
+                height="100%"></iframe>
+        </div>
+
+        <div class="max-w-md w-full">
+            <div
+                class="ring-1 ring-white/10 md:p-6 bg-zinc-950/40 rounded-xl pt-5 pr-5 pb-5 pl-5 backdrop-blur-md shadow-lg">
+                <div class="h-[150px] relative" id="vanta-canvas"><span style="position: relative; z-index: 1;">
+                    </span>
+                    <div class="absolute top-4 left-4 z-10">
+                        <span
+                            class="px-2 py-1 bg-neutral-800/80 rounded-full text-xs text-neutral-400 mb-2 inline-block">PLENORA
+                        </span>
+                        <h2 class="text-2xl font-bold text-white">Login Portal</h2>
+                        <div class="h-1 w-12 bg-neutral-400 mt-2 rounded-full"></div>
+                    </div><span style="position: relative; z-index: 1;">
+                    </span><canvas class="vanta-canvas" width="896" height="300"
+                        style="display: block; position: absolute; z-index: 0; top: 0px; left: 0px; width: 448px; height: 150px;"></canvas>
+                </div>
+
+                <div class="p-6 flex flex-col ">
+                    <div>
+                        <span
+                            class="px-2 py-1 bg-neutral-800 rounded-full text-xs text-neutral-400 mb-2 inline-block">AUTHENTICATION</span>
+                        <h3 class="text-xl font-semibold text-neutral-200 mb-4">Account Login</h3>
+
+                        <form class="space-y-4 mb-6">
+                            <div>
+                                <label for="email" class="text-neutral-300 text-xs font-medium block mb-1">EMAIL</label>
+                                <input type="email" id="email"
+                                    class="w-full rounded-lg bg-zinc-900/80 text-sm pl-9 pr-24 h-10 outline-none ring-1 ring-white/10 focus:ring-indigo-500/40 focus:outline-none placeholder:text-zinc-500 transition"
+                                    placeholder="your@email.com" required="">
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label for="password" class="text-neutral-300 text-xs font-medium">PASSWORD</label>
+                                    <a href="#" class="text-neutral-400 text-xs hover:text-neutral-300">Forgot?</a>
+                                </div>
+                                <input type="password" id="password"
+                                    class="w-full rounded-lg bg-zinc-900/80 text-sm pl-9 pr-24 h-10 outline-none ring-1 ring-white/10 focus:ring-indigo-500/40 focus:outline-none placeholder:text-zinc-500 transition"
+                                    placeholder="••••••••" required="">
+                            </div>
+
+                            <div class="flex items-center">
+                                <input type="checkbox" id="remember"
+                                    class="w-4 h-4 bg-neutral-800 border-neutral-700 rounded mr-2">
+                                <label for="remember" class="text-neutral-400 text-xs">Remember this device</label>
+                            </div>
+                        </form>
+
+                        <div class="flex justify-between text-sm space-x-3">
+                            <button type="submit"
+                                class="flex-1 h-9 rounded-md px-3 text-sm flex items-center justify-center text-zinc-300 ring-1 ring-white/10 hover:bg-zinc-900/80 hover:text-zinc-100 transition inline-flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="2443" height="2500"
+                                    preserveAspectRatio="xMidYMid" viewBox="0 0 256 262" id="google"
+                                    class="h-4 w-4 mr-2">
+                                    <path fill="#4285F4"
+                                        d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027">
+                                    </path>
+                                    <path fill="#34A853"
+                                        d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1">
+                                    </path>
+                                    <path fill="#FBBC05"
+                                        d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782">
+                                    </path>
+                                    <path fill="#EB4335"
+                                        d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251">
+                                    </path>
+                                </svg>Google</button>
+                            <button
+                                class="flex-1 h-9 rounded-md px-3 text-sm flex items-center justify-center text-zinc-300 ring-1 ring-white/10 hover:bg-zinc-900/80 hover:text-zinc-100 transition inline-flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" id="shopify"
+                                    class="h-4 w-4 mr-2">
+                                    <path fill="#95BF46"
+                                        d="M19.932 4.673a.233.233 0 0 0-.21-.195l-1.932-.144-1.422-1.413c-.141-.141-.415-.098-.522-.067l-.717.221C14.701 1.844 13.946.712 12.617.712c-.037 0-.074.001-.112.004C12.128.217 11.66 0 11.255 0 8.16 0 6.681 3.869 6.218 5.836c-1.203.372-2.057.637-2.166.672-.672.21-.693.231-.781.864-.067.479-1.823 14.063-1.823 14.063L15.136 24l7.417-1.604-2.621-17.723zM14.373 3.31l-1.158.358.001-.25c0-.765-.106-1.382-.277-1.87.685.087 1.141.866 1.434 1.762zM12.09 1.701c.19.477.314 1.161.314 2.085l-.001.134-2.392.741c.461-1.778 1.324-2.636 2.079-2.96zM11.17.83c.134 0 .268.045.397.134-.992.467-2.055 1.642-2.504 3.99l-1.891.586C7.698 3.749 8.947.83 11.17.83z">
+                                    </path>
+                                    <path fill="#5E8E3E"
+                                        d="m19.723 4.478-1.932-.144-1.422-1.413a.36.36 0 0 0-.198-.091L15.136 24l7.416-1.604s-2.604-17.602-2.62-17.723a.232.232 0 0 0-.209-.195z">
+                                    </path>
+                                    <path fill="#FFF"
+                                        d="m12.618 8.576-.914 2.72s-.801-.428-1.783-.428c-1.44 0-1.512.904-1.512 1.131 0 1.242 3.239 1.718 3.239 4.629 0 2.29-1.452 3.764-3.41 3.764-2.35 0-3.551-1.462-3.551-1.462l.629-2.079s1.235 1.06 2.277 1.06c.681 0 .958-.536.958-.928 0-1.621-2.657-1.693-2.657-4.356 0-2.241 1.609-4.41 4.856-4.41 1.25.001 1.868.359 1.868.359z">
+                                    </path>
+                                </svg>Shopify</button>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 text-center">
+                        <div class="divider-gradient mb-4"></div>
+                        <p class="text-neutral-400 text-xs">Don't have an account? <a href="#"
+                                class="text-neutral-300 hover:underline">Request Access</a></p>
+                        <div class="flex items-center justify-center mt-4 space-x-2">
+                            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                            <span class="text-neutral-400 text-xs">System Status: Operational</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Mobile device detection and blocking
+        function isMobileDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const mobileKeywords = ['android', 'iphone', 'ipad', 'ipod', 'blackberry', 'windows phone', 'mobile'];
+            return mobileKeywords.some(keyword => userAgent.includes(keyword)) || window.innerWidth <= 1024;
+        }
+
+        if (isMobileDevice()) {
+            document.querySelector('.desktop-content').style.display = 'none';
+            document.querySelector('.mobile-block').style.display = 'flex';
+        }
+        // Initialize lucide icons with 1.5 stroke width
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) {
+                lucide.createIcons({ attrs: { 'stroke-width': 1.5 } });
+            }
+        });
+
+        // Tabs logic
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const panels = document.querySelectorAll('[data-tab-panel]');
+        tabButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const target = btn.getAttribute('data-tab-target');
+                panels.forEach(p => {
+                    if (p.getAttribute('data-tab-panel') === target) {
+                        p.classList.remove('hidden');
+                    } else {
+                        p.classList.add('hidden');
+                    }
+                });
+                tabButtons.forEach(b => b.classList.remove('bg-zinc-900', 'text-white'));
+                btn.classList.add('bg-zinc-900', 'text-white');
+            });
+        });
+        // Activate first tab
+        if (tabButtons[0]) tabButtons[0].click();
+
+        // Copy buttons
+        document.querySelectorAll('[data-copy]').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const pre = btn.closest('pre');
+                const code = pre.querySelector('code')?.innerText ?? '';
+                try {
+                    await navigator.clipboard.writeText(code);
+                    const icon = btn.querySelector('i[data-lucide]');
+                    btn.innerHTML = '<i data-lucide="check" class="h-3.5 w-3.5 text-emerald-300"></i> Copied';
+                    if (window.lucide) lucide.createIcons({ attrs: { 'stroke-width': 1.5 } });
+                    setTimeout(() => {
+                        btn.innerHTML = '<i data-lucide="copy" class="h-3.5 w-3.5"></i> Copy';
+                        if (window.lucide) lucide.createIcons({ attrs: { 'stroke-width': 1.5 } });
+                    }, 1400);
+                } catch (e) {
+                    btn.innerHTML = '<i data-lucide="x" class="h-3.5 w-3.5 text-rose-300"></i> Failed';
+                    if (window.lucide) lucide.createIcons({ attrs: { 'stroke-width': 1.5 } });
+                    setTimeout(() => {
+                        btn.innerHTML = '<i data-lucide="copy" class="h-3.5 w-3.5"></i> Copy';
+                        if (window.lucide) lucide.createIcons({ attrs: { 'stroke-width': 1.5 } });
+                    }, 1400);
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

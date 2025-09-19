@@ -381,9 +381,32 @@ function addSectionToListAtPosition(sectionName, sectionId, targetElement, inser
 // Delete section from list
 function deleteSectionFromList(sectionElement) {
     if (sectionElement && sectionElement.parentNode) {
+        const sectionId = sectionElement.dataset.section;
+        const sectionType = sectionElement.dataset.type;
+        
+        // Remove from canvas
+        const canvas = document.getElementById('design-canvas');
+        if (canvas) {
+            let canvasElement;
+            if (sectionType === 'element') {
+                canvasElement = canvas.querySelector(`#${sectionId}`);
+            } else {
+                canvasElement = canvas.querySelector(`[data-section="${sectionId}"]`);
+            }
+            
+            if (canvasElement) {
+                canvasElement.remove();
+            }
+        }
+        
+        // Remove from sections list
         sectionElement.remove();
         updateEmptyState();
-        syncCanvasWithList();
+        
+        // Update code editor after deletion
+        if (window.updateCodeFromCanvas) {
+            window.updateCodeFromCanvas();
+        }
     }
 }
 
@@ -393,6 +416,7 @@ function duplicateSectionInList(sectionElement) {
     
     const sectionName = sectionElement.dataset.name;
     const sectionId = sectionElement.dataset.section;
+    const sectionType = sectionElement.dataset.type;
     
     // Generate unique ID for duplicate
     const sectionsList = document.getElementById('sections-list');
@@ -400,20 +424,51 @@ function duplicateSectionInList(sectionElement) {
     const existingCount = sectionsList.querySelectorAll(`[data-section^="${baseId}"]`).length;
     const uniqueId = `${baseId}-${existingCount + 1}`;
     
+    // Clone the element in canvas
+    const canvas = document.getElementById('design-canvas');
+    if (canvas) {
+        let originalElement;
+        if (sectionType === 'element') {
+            originalElement = canvas.querySelector(`#${sectionId}`);
+        } else {
+            originalElement = canvas.querySelector(`[data-section="${sectionId}"]`);
+        }
+        
+        if (originalElement) {
+            const clonedElement = originalElement.cloneNode(true);
+            if (sectionType === 'element') {
+                clonedElement.id = uniqueId;
+            } else {
+                clonedElement.dataset.section = uniqueId;
+            }
+            originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
+        }
+    }
+    
+    // Create list item
     const duplicatedLi = createSectionListItem(sectionName, uniqueId);
+    duplicatedLi.dataset.type = sectionType;
     sectionsList.insertBefore(duplicatedLi, sectionElement.nextSibling);
     
-    syncCanvasWithList();
+    // Update code editor
+    if (window.updateCodeFromCanvas) {
+        setTimeout(() => {
+            window.updateCodeFromCanvas();
+        }, 50);
+    }
 }
 
 // Initialize context menu for sections list
 function initializeSectionsContextMenu() {
     const sectionsList = document.getElementById('sections-list');
-    const contextMenu = document.getElementById('context-menu');
-    const duplicateBtn = document.getElementById('duplicate-item');
-    const deleteBtn = document.getElementById('delete-item');
+    let contextMenu = document.getElementById('context-menu');
     
-    if (!sectionsList || !contextMenu) return;
+    if (!sectionsList) return;
+    
+    // Create context menu if it doesn't exist
+    if (!contextMenu) {
+        contextMenu = createContextMenu();
+    }
     
     let currentTarget = null;
     
@@ -430,12 +485,12 @@ function initializeSectionsContextMenu() {
         }
     });
     
-    // Remove existing event listeners to prevent duplicates
+    // Handle duplicate and delete actions
+    const duplicateBtn = contextMenu.querySelector('#duplicate-item');
+    const deleteBtn = contextMenu.querySelector('#delete-item');
+    
     if (duplicateBtn) {
-        const newDuplicateBtn = duplicateBtn.cloneNode(true);
-        duplicateBtn.parentNode.replaceChild(newDuplicateBtn, duplicateBtn);
-        
-        newDuplicateBtn.addEventListener('click', () => {
+        duplicateBtn.addEventListener('click', () => {
             if (currentTarget) {
                 duplicateSectionInList(currentTarget);
                 contextMenu.classList.add('hidden');
@@ -445,10 +500,7 @@ function initializeSectionsContextMenu() {
     }
     
     if (deleteBtn) {
-        const newDeleteBtn = deleteBtn.cloneNode(true);
-        deleteBtn.parentNode.replaceChild(newDeleteBtn, deleteBtn);
-        
-        newDeleteBtn.addEventListener('click', () => {
+        deleteBtn.addEventListener('click', () => {
             if (currentTarget) {
                 deleteSectionFromList(currentTarget);
                 contextMenu.classList.add('hidden');
@@ -458,9 +510,11 @@ function initializeSectionsContextMenu() {
     }
     
     // Hide context menu on click outside
-    document.addEventListener('click', () => {
-        contextMenu.classList.add('hidden');
-        currentTarget = null;
+    document.addEventListener('click', (e) => {
+        if (!contextMenu.contains(e.target)) {
+            contextMenu.classList.add('hidden');
+            currentTarget = null;
+        }
     });
 }
 
@@ -471,6 +525,22 @@ function syncCanvasWithList() {
     
     if (!sectionsList || !designCanvas) return;
     
+    // Store existing elements
+    const existingElements = new Map();
+    const nonIdElements = [];
+    
+    // Collect all existing elements
+    Array.from(designCanvas.children).forEach(element => {
+        if (element.id) {
+            existingElements.set(element.id, element);
+        } else if (element.dataset && element.dataset.section) {
+            existingElements.set(element.dataset.section, element);
+        } else if (!element.classList.contains('absolute')) {
+            // Preserve non-ID elements like <script>, <h2>, etc.
+            nonIdElements.push(element);
+        }
+    });
+    
     // Remove placeholder if it exists
     const placeholder = designCanvas.querySelector('.absolute.inset-0');
     if (placeholder) {
@@ -480,37 +550,62 @@ function syncCanvasWithList() {
     // Clear canvas
     designCanvas.innerHTML = '';
     
-    // Add sections in order from list
+    // Re-add elements in the order from sections list
     Array.from(sectionsList.children).forEach(li => {
         const sectionId = li.dataset.section;
-        const sectionName = li.dataset.name;
         
-        const sectionElement = document.createElement('div');
-        sectionElement.className = 'w-full p-8 border-b border-white/10 hover:bg-white/5 transition-colors';
-        sectionElement.dataset.section = sectionId;
-        sectionElement.innerHTML = `
-            <div class="text-center text-slate-400">
-                <h3 class="text-lg font-medium mb-2">${sectionName} Section</h3>
-                <p class="text-sm opacity-60">Click to edit this ${sectionName.toLowerCase()} section</p>
-            </div>
-        `;
-        
-        designCanvas.appendChild(sectionElement);
+        // Use existing element if available
+        const existingElement = existingElements.get(sectionId);
+        if (existingElement) {
+            designCanvas.appendChild(existingElement);
+        } else {
+            // Create new section element only if it doesn't exist
+            const sectionName = li.dataset.name;
+            const sectionElement = document.createElement('section');
+            sectionElement.className = 'w-full p-8 border-b border-white/10 hover:bg-white/5 transition-colors';
+            sectionElement.dataset.section = sectionId;
+            sectionElement.innerHTML = `
+                <div class="text-center text-slate-400">
+                    <h3 class="text-lg font-medium mb-2">${sectionName} Section</h3>
+                    <p class="text-sm opacity-60">Click to edit this ${sectionName.toLowerCase()} section</p>
+                </div>
+            `;
+            designCanvas.appendChild(sectionElement);
+        }
+    });
+    
+    // Re-add non-ID elements (like script tags) at the end
+    nonIdElements.forEach(element => {
+        designCanvas.appendChild(element);
     });
     
     // Show placeholder if no sections
     if (sectionsList.children.length === 0) {
-        designCanvas.innerHTML = `
-            <div class="absolute inset-0 flex items-center justify-center text-slate-500 text-sm">
-                <div class="text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 opacity-30">
-                        <rect width="18" height="18" x="3" y="3" rx="2"></rect>
-                        <path d="M9 9h6v6H9z"></path>
-                    </svg>
-                    <p class="opacity-50">Drop sections here to start building</p>
+        designCanvas.innerHTML = '';
+        nonIdElements.forEach(element => {
+            designCanvas.appendChild(element);
+        });
+        
+        if (nonIdElements.length === 0) {
+            designCanvas.innerHTML = `
+                <div class="absolute inset-0 flex items-center justify-center text-slate-500 text-sm">
+                    <div class="text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 opacity-30">
+                            <rect width="18" height="18" x="3" y="3" rx="2"></rect>
+                            <path d="M9 9h6v6H9z"></path>
+                        </svg>
+                        <p class="opacity-50">Drop sections here to start building</p>
+                    </div>
                 </div>
-            </div>
-        `;
+            `;
+        }
+    }
+    
+    // Update code editor after canvas sync
+    if (window.updateCodeFromCanvas) {
+        setTimeout(() => {
+            window.updateCodeFromCanvas();
+        }, 50);
     }
 }
 
@@ -559,26 +654,30 @@ function initializeSectionsDragDrop() {
         if (sectionData && !draggedElement) {
             try {
                 const data = JSON.parse(sectionData);
-                
-                // Find drop position
-                const dropTarget = e.target.closest('li');
-                if (dropTarget) {
-                    const rect = dropTarget.getBoundingClientRect();
-                    const midpoint = rect.top + rect.height / 2;
-                    addSectionToListAtPosition(data.name, data.id, dropTarget, e.clientY < midpoint);
-                } else {
-                    addSectionToList(data.name, data.id);
+                // Validate that this is proper section data
+                if (data.name && data.id && typeof data.name === 'string' && typeof data.id === 'string') {
+                    // Find drop position
+                    const dropTarget = e.target.closest('li');
+                    if (dropTarget) {
+                        const rect = dropTarget.getBoundingClientRect();
+                        const midpoint = rect.top + rect.height / 2;
+                        addSectionToListAtPosition(data.name, data.id, dropTarget, e.clientY < midpoint);
+                    } else {
+                        addSectionToList(data.name, data.id);
+                    }
+                    
+                    closeModalHandler();
+                    return;
                 }
-                
-                closeModalHandler();
-                return;
             } catch {
-                // Handle simple string data
-                const sectionId = sectionData;
-                const sectionName = sectionId.charAt(0).toUpperCase() + sectionId.slice(1).replace(/-/g, ' ');
-                addSectionToList(sectionName, sectionId);
-                closeModalHandler();
-                return;
+                // Reject arbitrary text/URLs - only accept known section IDs
+                const validSectionIds = csvSections.map(s => s.section.toLowerCase().replace(/[^a-z0-9]/g, '-'));
+                if (validSectionIds.includes(sectionData)) {
+                    const sectionName = sectionData.charAt(0).toUpperCase() + sectionData.slice(1).replace(/-/g, ' ');
+                    addSectionToList(sectionName, sectionData);
+                    closeModalHandler();
+                    return;
+                }
             }
         }
         
@@ -596,6 +695,13 @@ function initializeSectionsDragDrop() {
                 }
                 
                 syncCanvasWithList();
+                
+                // Update code editor after reordering
+                if (window.updateCodeFromCanvas) {
+                    setTimeout(() => {
+                        window.updateCodeFromCanvas();
+                    }, 100);
+                }
             }
         }
     });
@@ -616,19 +722,24 @@ function initializeSectionsDragDrop() {
         e.preventDefault();
         designCanvas.classList.remove('bg-zinc-900/50');
         
-        // Handle drop from modal
+        // Only handle drops from modal sections
         const sectionData = e.dataTransfer.getData('text/plain');
         if (sectionData) {
             try {
                 const data = JSON.parse(sectionData);
-                addSectionToList(data.name, data.id);
-                closeModalHandler();
+                // Validate that this is proper section data with name and id
+                if (data.name && data.id && typeof data.name === 'string' && typeof data.id === 'string') {
+                    addSectionToList(data.name, data.id);
+                    closeModalHandler();
+                }
             } catch {
-                // Handle simple string data
-                const sectionId = sectionData;
-                const sectionName = sectionId.charAt(0).toUpperCase() + sectionId.slice(1).replace(/-/g, ' ');
-                addSectionToList(sectionName, sectionId);
-                closeModalHandler();
+                // Reject arbitrary text/URLs - only accept known section IDs
+                const validSectionIds = csvSections.map(s => s.section.toLowerCase().replace(/[^a-z0-9]/g, '-'));
+                if (validSectionIds.includes(sectionData)) {
+                    const sectionName = sectionData.charAt(0).toUpperCase() + sectionData.slice(1).replace(/-/g, ' ');
+                    addSectionToList(sectionName, sectionData);
+                    closeModalHandler();
+                }
             }
         }
     });
@@ -835,3 +946,113 @@ if (document.readyState === 'loading') {
 } else {
     initializeModals();
 }
+
+// Initialize canvas context menu for AI prompts
+function initializeCanvasContextMenu() {
+    let promptContextMenu = null;
+    let currentSection = null;
+    
+    document.addEventListener('contextmenu', function(e) {
+        const canvasSection = e.target.closest('#design-canvas [data-section], #design-canvas .section-element');
+        if (canvasSection) {
+            e.preventDefault();
+            currentSection = canvasSection;
+            
+            if (!promptContextMenu) {
+                promptContextMenu = document.createElement('div');
+                promptContextMenu.className = 'fixed z-[9999] hidden';
+                promptContextMenu.innerHTML = `
+                    <div class="w-80">
+                        <div class="bg-black/80 border-white/10 border rounded-lg p-3 shadow-xl backdrop-blur">
+                            <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/10">
+                                <input id="canvas-prompt" type="text" placeholder="Create Section with Plenora AI" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-500 px-1 text-white">
+                                <button id="canvas-run-btn" type="button" class="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md bg-blue-400 text-black hover:bg-blue-300 transition">
+                                    <span class="run-text">Run</span>
+                                    <svg class="run-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12h14"></path>
+                                        <path d="m12 5 7 7-7 7"></path>
+                                    </svg>
+                                    <svg class="loading-icon hidden animate-spin" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-2 flex gap-1 overflow-x-auto">
+                                <button type="button" class="canvas-suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create a hero banner with large headline, subtitle, and call-to-action button">
+                                    Hero banner
+                                </button>
+                                <button type="button" class="canvas-suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create pricing cards with 3 plans showing features, price, and signup button">
+                                    Pricing cards
+                                </button>
+                                <button type="button" class="canvas-suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create a testimonial section similar to those on Airbnb's homepage with avatar, quote, and customer name">
+                                    Testimonials
+                                </button>
+                            </div>
+                            <p class="mt-2 text-[10px] text-gray-500">Enter what component you want in the section</p>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(promptContextMenu);
+                
+                // Add suggestion button listeners
+                promptContextMenu.querySelectorAll('.canvas-suggestion-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const prompt = this.dataset.prompt || this.textContent.trim();
+                        promptContextMenu.querySelector('#canvas-prompt').value = prompt;
+                    });
+                });
+                
+                // Add run button functionality
+                promptContextMenu.querySelector('#canvas-run-btn').addEventListener('click', function() {
+                    const prompt = promptContextMenu.querySelector('#canvas-prompt').value.trim();
+                    if (prompt && currentSection) {
+                        const runText = this.querySelector('.run-text');
+                        const runIcon = this.querySelector('.run-icon');
+                        const loadingIcon = this.querySelector('.loading-icon');
+                        
+                        runText.textContent = 'Loading...';
+                        runIcon.classList.add('hidden');
+                        loadingIcon.classList.remove('hidden');
+                        this.disabled = true;
+                        
+                        const originalContent = currentSection.innerHTML;
+                        currentSection.innerHTML = `
+                            <div class="flex items-center justify-center p-8">
+                                <div class="flex items-center gap-2 text-slate-300">
+                                    <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 12a9 9 0 11-6.219-8.56"/>
+                                    </svg>
+                                    <span class="text-sm">Generating content...</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        setTimeout(() => {
+                            runText.textContent = 'Run';
+                            runIcon.classList.remove('hidden');
+                            loadingIcon.classList.add('hidden');
+                            this.disabled = false;
+                            currentSection.innerHTML = originalContent;
+                            promptContextMenu.classList.add('hidden');
+                        }, 5000);
+                    }
+                });
+            }
+            
+            promptContextMenu.style.left = e.pageX + 'px';
+            promptContextMenu.style.top = e.pageY + 'px';
+            promptContextMenu.classList.remove('hidden');
+        }
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (promptContextMenu && !promptContextMenu.contains(e.target)) {
+            promptContextMenu.classList.add('hidden');
+        }
+    });
+}
+
+// Initialize canvas context menu
+setTimeout(() => {
+    initializeCanvasContextMenu();
+}, 500);

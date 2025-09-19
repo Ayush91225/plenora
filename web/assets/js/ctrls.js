@@ -77,18 +77,13 @@ const rightSidebar = document.getElementById('right-sidebar');
 const mainContent = document.getElementById('main-content');
 
 function updateLayout() {
-    if (leftSidebarOpen && rightSidebarOpen) {
-        mainContent.className = 'relative md:col-span-6 bg-white/[0.01] backdrop-blur-sm';
-    } else if (leftSidebarOpen || rightSidebarOpen) {
-        mainContent.className = 'relative md:col-span-9 bg-white/[0.01] backdrop-blur-sm';
-    } else {
-        mainContent.className = 'relative md:col-span-12 bg-white/[0.01] backdrop-blur-sm';
-    }
+    // Layout is now handled by flex and resize system
+    // No need to change classes, just visibility
 }
 
 function toggleLeftSidebar() {
     leftSidebarOpen = !leftSidebarOpen;
-    sidebar.style.display = leftSidebarOpen ? 'block' : 'none';
+    sidebar.style.display = leftSidebarOpen ? 'flex' : 'none';
     floatingToggle.style.display = leftSidebarOpen ? 'none' : 'block';
     updateLayout();
 }
@@ -125,8 +120,11 @@ window.addEventListener('resize', resizeCanvas);
 // Make design canvas a drop zone for sections
 if (designCanvas) {
     designCanvas.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        designCanvas.classList.add('bg-zinc-900/50');
+        // Only allow drops from modal sections, not text
+        if (draggedFromModal && draggedElement) {
+            e.preventDefault();
+            designCanvas.classList.add('bg-zinc-900/50');
+        }
     });
     
     designCanvas.addEventListener('dragleave', (e) => {
@@ -139,6 +137,7 @@ if (designCanvas) {
         e.preventDefault();
         designCanvas.classList.remove('bg-zinc-900/50');
         
+        // Only accept drops from modal sections
         if (draggedFromModal && draggedElement) {
             const sectionType = e.dataTransfer.getData('text/plain');
             addSectionToCanvas(sectionType);
@@ -149,8 +148,9 @@ if (designCanvas) {
 
 // Add section to canvas
 function addSectionToCanvas(sectionType) {
-    const sectionElement = document.createElement('div');
+    const sectionElement = document.createElement('section');
     sectionElement.className = 'w-full p-8 border-b border-white/10 hover:bg-white/5 transition-colors';
+    sectionElement.dataset.section = sectionType;
     sectionElement.innerHTML = `
         <div class="text-center text-slate-400">
             <h3 class="text-lg font-medium mb-2">${sectionType.charAt(0).toUpperCase() + sectionType.slice(1)} Section</h3>
@@ -165,6 +165,13 @@ function addSectionToCanvas(sectionType) {
     }
     
     designCanvas.appendChild(sectionElement);
+    
+    // Sync with sections list and code editor
+    if (window.syncSectionsListFromCanvas) {
+        setTimeout(() => {
+            window.syncSectionsListFromCanvas();
+        }, 50);
+    }
 }
 
 /**
@@ -646,6 +653,12 @@ function initializeAssetManagement() {
             assetsGrid.classList.remove('hidden');
             assetsEmpty.classList.add('hidden');
             assetsGrid.innerHTML = assets.map(getAssetDisplay).join('');
+            
+            // Add context menu class to asset items
+            const assetItems = assetsGrid.querySelectorAll('div');
+            assetItems.forEach(item => {
+                item.classList.add('asset-context-item');
+            });
         }
     }
 
@@ -693,6 +706,108 @@ function initializeAssetManagement() {
     });
 
     updateAssetsDisplay();
+}
+
+/**
+ * Asset Context Menu System
+ * Handles right-click context menu for assets with copy URI functionality
+ */
+function initializeAssetContextMenu() {
+    let assetContextMenu = null;
+    let currentAssetIndex = -1;
+    
+    document.addEventListener('contextmenu', function(e) {
+        const assetsGrid = document.getElementById('assets-grid');
+        if (!assetsGrid || assetsGrid.classList.contains('hidden')) return;
+        
+        const assetItem = e.target.closest('#assets-grid > div');
+        if (assetItem) {
+            e.preventDefault();
+            
+            // Get asset index
+            currentAssetIndex = Array.from(assetsGrid.children).indexOf(assetItem);
+            
+            if (!assetContextMenu) {
+                assetContextMenu = document.createElement('div');
+                assetContextMenu.className = 'fixed z-[9999] hidden';
+                assetContextMenu.innerHTML = `
+                    <div class="bg-black/80 border-white/10 border rounded-lg shadow-xl backdrop-blur">
+                        <button id="copy-asset-uri" class="w-full px-4 py-2 text-left text-sm text-white hover:bg-white/10 rounded-lg transition">
+                            Copy Asset URI
+                        </button>
+                    </div>
+                `;
+                document.body.appendChild(assetContextMenu);
+                
+                assetContextMenu.querySelector('#copy-asset-uri').addEventListener('click', function() {
+                    if (currentAssetIndex >= 0 && assets[currentAssetIndex]) {
+                        const asset = assets[currentAssetIndex];
+                        
+                        // Use fallback copy method for compatibility
+                        const textArea = document.createElement('textarea');
+                        textArea.value = asset.url;
+                        textArea.style.position = 'fixed';
+                        textArea.style.left = '-999999px';
+                        textArea.style.top = '-999999px';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        
+                        try {
+                            document.execCommand('copy');
+                            showToast();
+                        } catch (err) {
+                            console.error('Copy failed:', err);
+                        }
+                        
+                        document.body.removeChild(textArea);
+                        assetContextMenu.classList.add('hidden');
+                    }
+                });
+            }
+            
+            assetContextMenu.style.left = e.pageX + 'px';
+            assetContextMenu.style.top = e.pageY + 'px';
+            assetContextMenu.classList.remove('hidden');
+        }
+    });
+    
+    document.addEventListener('click', function(e) {
+        if (assetContextMenu && !assetContextMenu.contains(e.target)) {
+            assetContextMenu.classList.add('hidden');
+        }
+    });
+}
+
+/**
+ * Toast Notification System
+ * Shows success message when asset URI is copied
+ */
+function showToast() {
+    const toast = document.createElement('div');
+    toast.className = 'fixed top-5 right-4 z-[10000] transition-all duration-300 transform translate-x-full opacity-0';
+    toast.innerHTML = `
+        <div class="flex items-center gap-3 px-4 py-3 rounded-xl backdrop-blur-md bg-black/20 border border-white/20 text-white shadow-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(134, 239 ,172)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle" class="lucide lucide-check-circle h-5 w-5" style="color: #f7b984;">
+                <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                <path d="m9 11 3 3L22 4"></path>
+            </svg>
+            <span class="text-sm">Asset URI copied</span>
+        </div>
+    `;
+    
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full', 'opacity-0');
+    }, 100);
+    
+    setTimeout(() => {
+        toast.classList.add('translate-x-full', 'opacity-0');
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 300);
+    }, 3000);
 }
 
 // Asset management initialization is now handled by initializeAllSystems()
@@ -751,6 +866,8 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Workspace management is now handled by workspaces-x9k2m7.js
+
 /**
  * Global Initialization Function
  * Ensures all systems are properly initialized in the correct order
@@ -786,6 +903,13 @@ function initializeAllSystems() {
         console.log('🔄 Step 6: Initializing Drag from Modal');
         initializeDragFromModal();
     }, 300);
+    
+    setTimeout(() => {
+        console.log('🔄 Step 7: Initializing Asset Context Menu');
+        initializeAssetContextMenu();
+    }, 350);
+    
+    // Workspace management is now handled by workspaces-x9k2m7.js
     
     setTimeout(() => {
         console.log('✅ ALL SYSTEMS INITIALIZED SUCCESSFULLY');

@@ -23,6 +23,19 @@
         link.href = 'assets/css/css2.css?v=' + Date.now();
         document.head.appendChild(link);
     </script>
+    
+    <style>
+        .canvas-code-tab.active {
+            background-color: rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+        }
+        .canvas-code-tab:not(.active) {
+            color: rgb(148, 163, 184) !important;
+        }
+        .canvas-code-tab:not(.active):hover {
+            color: white !important;
+        }
+    </style>
 
 </head>
 
@@ -69,22 +82,7 @@
                     Full feature compatibility
                                     </svg>
                                 </div>
-                                <div class="min-w-0">
-                                    <p class="text-sm font-medium text-white">Hero Section</p>
-                                    <p class="text-xs text-slate-400">Main banner with call-to-action</p>
-                                </div>
-                            </div>
-                            <div class="section-item flex items-start gap-3 rounded-xl ring-1 p-4 ring-white/10 bg-white/5 hover:bg-white/10 cursor-pointer transition-colors">
-                                <div class="shrink-0 h-8 w-8 rounded-lg ring-1 grid place-items-center bg-white/5 ring-white/10 text-yellow-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                                    </svg>
-                                </div>
-                                <div class="min-w-0">
-                                    <p class="text-sm font-medium text-white">Footer</p>
-                                    <p class="text-xs text-slate-400">Links and copyright info</p>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -99,10 +97,7 @@
             <div
                 class="flex items-center justify-between border-b px-3 py-2 border-white/20 backdrop-blur-sm bg-white/[0.03]">
                 <div class="flex items-center gap-2">
-
-
                     <img src="/assets/logo/logo.svg" class="h-4 w-4">
-
                     <div
                         class="ml-3 hidden items-center gap-2 rounded-lg border px-2 py-1 text-xs sm:flex border-white/10 bg-white/5 text-slate-300">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -112,9 +107,26 @@
                             <rect width="7" height="7" x="14" y="3" rx="1"></rect>
                             <rect width="7" height="7" x="14" y="14" rx="1"></rect>
                         </svg>
-                        Plenora: Untitled Project
+                        Plenora
                     </div>
                 </div>
+                
+                <!-- Workspaces/Pages Section -->
+                <div class="flex-1 flex items-stretch mx-4 min-w-0">
+                    <button id="add-workspace-btn" class="flex-shrink-0 px-3 py-2 text-slate-400 hover:text-white hover:bg-white/5 transition border-r border-white/10" title="Add page">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5v14"></path>
+                        </svg>
+                    </button>
+                    <div id="workspaces-container" class="flex items-stretch flex-1 overflow-x-auto scrollbar-hide">
+                        <div class="workspace-tab active flex-shrink-0 px-4 py-2 text-xs bg-white/5 text-white border-r border-white/10 cursor-pointer transition hover:bg-white/10 relative" data-workspace="home">
+                            Home
+                            <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-sky-400"></div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="flex items-center gap-2">
                     <button
                         class="hidden rounded-md border p-1.5 sm:inline-flex border-white/10 bg-white/5 text-slate-200 hover:bg-white/10">
@@ -173,9 +185,9 @@
             </button>
 
             <!-- Editor body -->
-            <div id="editor-body" class="h-[calc(100vh-60px)] grid grid-cols-1 md:grid-cols-12">
+            <div id="editor-body" class="h-[calc(100vh-60px)] flex relative">
                 <!-- Left panel -->
-<aside id="sidebar" class="hidden md:block md:col-span-3 border-r bg-white/[0.02] backdrop-blur-xl border-white/20 flex flex-col h-full">
+<aside id="sidebar" class="hidden md:block border-r bg-white/[0.02] backdrop-blur-xl border-white/20 flex flex-col h-full" style="width: 300px; flex-shrink: 0;">
                     <div class="flex-shrink-0 mb-3 flex items-center justify-between pt-3 pr-3 pl-3">
                         <button id="sidebar-toggle" class="inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs font-medium border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-3.5 w-3.5">
@@ -229,19 +241,19 @@
                                 <span class="text-xs font-medium">Components</span>
                             </div>
                             <ul class="space-y-1 pl-6 text-xs">
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Button</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Card</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Section</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Background</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Logo</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Heading</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Header</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Hero</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Feature</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Pricing</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Testimonial</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Form</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Footer</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'button')">Button</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'card')">Card</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'section')">Section</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'background')">Background</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'logo')">Logo</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'heading')">Heading</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'header')">Header</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'hero')">Hero</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'feature')">Feature</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'pricing')">Pricing</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'testimonial')">Testimonial</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'form')">Form</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('components', 'footer')">Footer</li>
                             </ul>
                         </div>
                         <div class="rounded-lg pt-2 pr-2 pb-2 pl-2 space-y-3 bg-white/5">
@@ -253,24 +265,24 @@
                                 <span class="text-xs font-medium">Templates</span>
                             </div>
                             <ul class="space-y-1 pl-6 text-xs">
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Hero</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Features</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Testimonial</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Pricing</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Modal</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Login</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Sidebar</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Onboarding</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Footer</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Grid</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Input</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Payment</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Menu</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Background</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">3D</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Home</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Chart</li>
-                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer">Interactive</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'hero')">Hero</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'features')">Features</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'testimonial')">Testimonial</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'pricing')">Pricing</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'modal')">Modal</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'login')">Login</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'sidebar')">Sidebar</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'onboarding')">Onboarding</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'footer')">Footer</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'grid')">Grid</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'input')">Input</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'payment')">Payment</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'menu')">Menu</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'background')">Background</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', '3d')">3D</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'home')">Home</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'chart')">Chart</li>
+                                <li class="flex items-center gap-2 rounded-md px-2 py-1 hover:bg-white/5 cursor-pointer" onclick="openLibraryModal('templates', 'interactive')">Interactive</li>
                             </ul>
                         </div>
 
@@ -279,46 +291,49 @@
                 </div></div></aside>
 
                 <!-- Canvas -->
-                <main id="main-content" class="relative md:col-span-6 bg-white/[0.05] backdrop-blur-sm">
-                    <div class="flex items-center gap-2 border-b px-3 py-2 text-xs border-white/10 text-slate-300">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="h-4 w-4 text-sky-400">
-                            <path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8"></path>
-                            <path d="M10 19v-3.96 3.15"></path>
-                            <path d="M7 19h5"></path>
-                            <rect width="6" height="10" x="16" y="12" rx="2"></rect>
-                        </svg>
-                        <span>Devices</span>
-                        <div class="relative">
-                            <button id="device-dropdown" class="rounded-md px-1.5 py-0.5 bg-white/5 hover:bg-white/10 flex items-center gap-1">
-                                <span id="selected-device">Desktop</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6"/>
-                                </svg>
-                            </button>
-                            <div id="device-options" class="absolute top-full left-0 mt-1 bg-zinc-800 border border-white/10 rounded-md shadow-lg z-50 hidden">
-                                <button class="device-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-device="Desktop" data-width="1200">Desktop</button>
-                                <button class="device-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-device="Tablet" data-width="768">Tablet</button>
-                                <button class="device-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-device="Mobile" data-width="375">Mobile</button>
+                <main id="main-content" class="relative flex-1 bg-white/[0.05] backdrop-blur-sm">
+                    <div class="flex items-center justify-between border-b px-3 py-2 text-xs border-white/10 text-slate-300">
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="h-4 w-4 text-sky-400">
+                                <path d="M18 8V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h8"></path>
+                                <path d="M10 19v-3.96 3.15"></path>
+                                <path d="M7 19h5"></path>
+                                <rect width="6" height="10" x="16" y="12" rx="2"></rect>
+                            </svg>
+                            <span>Devices</span>
+                            <div class="relative">
+                                <button id="device-dropdown" class="rounded-md px-1.5 py-0.5 bg-white/5 hover:bg-white/10 flex items-center gap-1">
+                                    <span id="selected-device">Desktop</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m6 9 6 6 6-6"/>
+                                    </svg>
+                                </button>
+                                <div id="device-options" class="absolute top-full left-0 mt-1 bg-zinc-800 border border-white/10 rounded-md shadow-lg hidden" style="z-index: 9999999999999;">
+                                    <button class="device-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-device="Desktop" data-width="1200">Desktop</button>
+                                    <button class="device-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-device="Tablet" data-width="768">Tablet</button>
+                                    <button class="device-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-device="Mobile" data-width="375">Mobile</button>
+                                </div>
+                            </div>
+                            <span class="text-slate-500">|</span>
+                            <div class="relative flex items-center">
+                                <input id="width-input" type="text" value="1200" class="w-16 px-1.5 py-0.5 text-xs bg-white/5 border border-white/10 rounded-l-md text-slate-300 focus:outline-none focus:border-white/20">
+                                <button id="width-dropdown" class="px-1 py-0.5 bg-white/5 border border-l-0 border-white/10 rounded-r-md hover:bg-white/10 flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="m6 9 6 6 6-6"/>
+                                    </svg>
+                                </button>
+                                <div id="width-options" class="absolute top-full left-0 mt-1 bg-zinc-800 border border-white/10 rounded-md shadow-lg hidden" style="z-index: 9999999999999;">
+                                    <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="100%">100%</button>
+                                    <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="1200">1200px</button>
+                                    <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="768">768px</button>
+                                    <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="375">375px</button>
+                                </div>
                             </div>
                         </div>
-                        <span class="text-slate-500">|</span>
-                        <div class="relative flex items-center">
-                            <input id="width-input" type="text" value="1200" class="w-16 px-1.5 py-0.5 text-xs bg-white/5 border border-white/10 rounded-l-md text-slate-300 focus:outline-none focus:border-white/20">
-                            <button id="width-dropdown" class="px-1 py-0.5 bg-white/5 border border-l-0 border-white/10 rounded-r-md hover:bg-white/10 flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m6 9 6 6 6-6"/>
-                                </svg>
-                            </button>
-                            <div id="width-options" class="absolute top-full left-0 mt-1 bg-zinc-800 border border-white/10 rounded-md shadow-lg z-50 hidden">
-                                <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="100%">100%</button>
-                                <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="1200">1200px</button>
-                                <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="768">768px</button>
-                                <button class="width-option block w-full px-3 py-1.5 text-xs text-left hover:bg-white/10" data-width="375">375px</button>
-                            </div>
-                        </div>
-                        <div class="ml-auto flex items-center gap-1">
+                        
+                        <div class="flex items-center gap-1">
                             <button id="undo" class="rounded-md border p-1 border-white/10 bg-white/5 hover:bg-white/10">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -335,6 +350,16 @@
                                     <path d="M20 9H9.5A5.5 5.5 0 0 0 4 14.5A5.5 5.5 0 0 0 9.5 20H13"></path>
                                 </svg>
                             </button>
+                            
+                            <!-- Canvas/Code Tabs -->
+                            <div class="flex items-center bg-white/5 rounded-md p-0.5 ml-2">
+                                <button id="canvas-tab" class="canvas-code-tab active px-3 py-1 text-xs rounded-sm bg-white/10 text-white transition">
+                                    Canvas
+                                </button>
+                                <button id="code-tab" class="canvas-code-tab px-3 py-1 text-xs rounded-sm text-slate-400 hover:text-white transition">
+                                    Code
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -363,11 +388,15 @@
     </div>
 </div>
 
+<div id="code-editor-container" class="h-[calc(100vh-100px)] w-full hidden">
+    <div id="monaco-editor" class="w-full h-full"></div>
+</div>
+
                 </main>
 
                 <!-- Right panel -->
                 <aside id="right-sidebar"
-                    class="hidden md:block md:col-span-3 border-l p-3 border-white/20 bg-white/[0.02] backdrop-blur-xl overflow-y-auto">
+                    class="hidden md:block border-l p-3 border-white/20 bg-white/[0.02] backdrop-blur-xl overflow-y-auto" style="width: 300px; flex-shrink: 0;">
                     <div class="mb-3 flex items-center justify-between">
                         <button id="right-sidebar-toggle"
                             class="inline-flex items-center gap-2 rounded-md border px-2 py-1 text-xs font-medium border-white/10 bg-white/5 text-slate-300 hover:bg-white/10 cursor-pointer">
@@ -536,6 +565,22 @@
         ctrlScript.src = 'assets/js/ctrls.js?v=' + Date.now();
         document.head.appendChild(ctrlScript);
         
+        const libScript = document.createElement('script');
+        libScript.src = 'assets/js/lib-modal-x7k9.js?v=' + Date.now();
+        document.head.appendChild(libScript);
+        
+        const workspaceScript = document.createElement('script');
+        workspaceScript.src = 'assets/js/workspaces-x9k2m7.js?v=' + Date.now();
+        document.head.appendChild(workspaceScript);
+        
+        const resizeScript = document.createElement('script');
+        resizeScript.src = 'assets/js/resize-k8m3p9.js?v=' + Date.now();
+        document.head.appendChild(resizeScript);
+        
+        const canvasCodeScript = document.createElement('script');
+        canvasCodeScript.src = 'assets/js/canvas-code-m9x7k3.js?v=' + Date.now();
+        document.head.appendChild(canvasCodeScript);
+        
         // Device selector functionality
         document.addEventListener('DOMContentLoaded', function() {
             const dropdown = document.getElementById('device-dropdown');
@@ -613,125 +658,7 @@
             });
         });
         
-        // Context menu for sections
-        let contextMenu = null;
-        let currentSection = null;
-        
-        document.addEventListener('contextmenu', function(e) {
-            const section = e.target.closest('.section-element, [data-section]');
-            if (section) {
-                e.preventDefault();
-                currentSection = section;
-                
-                if (!contextMenu) {
-                    contextMenu = document.createElement('div');
-                    contextMenu.className = 'fixed z-[9999] hidden';
-                    contextMenu.innerHTML = `
-                        <div class="w-80">
-                            <div class="bg-black/80 border-white/10 border rounded-lg p-3 shadow-xl backdrop-blur">
-                                <div class="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/10">
-                                    <input id="prompt" type="text" placeholder="Create Section with Plenora AI" class="flex-1 bg-transparent outline-none text-xs placeholder:text-gray-500 px-1 text-white">
-                                    <button id="run-btn" type="button" class="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md bg-blue-400 text-black hover:bg-blue-300 transition">
-                                        <span class="run-text">Run</span>
-                                        <svg class="run-icon" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M5 12h14"></path>
-                                            <path d="m12 5 7 7-7 7"></path>
-                                        </svg>
-                                        <svg class="loading-icon hidden animate-spin" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 12a9 9 0 11-6.219-8.56"/>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div class="mt-2 flex gap-1 overflow-x-auto">
-                                    <button type="button" class="suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create a hero banner with large headline, subtitle, and call-to-action button">
-                                        Hero banner
-                                    </button>
-                                    <button type="button" class="suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create pricing cards with 3 plans showing features, price, and signup button">
-                                        Pricing cards
-                                    </button>
-                                    <button type="button" class="suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create a testimonial section similar to those on Airbnb's homepage with avatar, quote, and customer name">
-                                        Testimonials
-                                    </button>
-                                    <button type="button" class="suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create a product card with image at the top, product title, price, short description, and an 'Add to Cart' button">
-                                        Product card
-                                    </button>
-                                    <button type="button" class="suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create a contact form with name, email, message fields and submit button">
-                                        Contact form
-                                    </button>
-                                    <button type="button" class="suggestion-btn flex-shrink-0 text-[10px] px-2 py-1 rounded bg-white/5 border border-white/10 hover:bg-white/10 text-white" data-prompt="Create a feature section with icons, titles, and descriptions in a grid layout">
-                                        Features grid
-                                    </button>
-                                </div>
-                                <p class="mt-2 text-[10px] text-gray-500">Enter what component you want in the section</p>
-                            </div>
-                        </div>
-                    `;
-                    document.body.appendChild(contextMenu);
-                    
-                    // Add event listeners for all suggestion buttons
-                    contextMenu.querySelectorAll('.suggestion-btn').forEach(btn => {
-                        btn.addEventListener('click', function() {
-                            const prompt = this.dataset.prompt || this.textContent.trim();
-                            contextMenu.querySelector('#prompt').value = prompt;
-                        });
-                    });
-                    
-                    // Add run button functionality
-                    contextMenu.querySelector('#run-btn').addEventListener('click', function() {
-                        const prompt = contextMenu.querySelector('#prompt').value.trim();
-                        if (prompt && currentSection) {
-                            // Show loading in button
-                            const runText = this.querySelector('.run-text');
-                            const runIcon = this.querySelector('.run-icon');
-                            const loadingIcon = this.querySelector('.loading-icon');
-                            
-                            runText.textContent = 'Loading...';
-                            runIcon.classList.add('hidden');
-                            loadingIcon.classList.remove('hidden');
-                            this.disabled = true;
-                            
-                            // Show loading in section
-                            const originalContent = currentSection.innerHTML;
-                            currentSection.innerHTML = `
-                                <div class="flex items-center justify-center p-8">
-                                    <div class="flex items-center gap-2 text-slate-300">
-                                        <svg class="animate-spin" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M21 12a9 9 0 11-6.219-8.56"/>
-                                        </svg>
-                                        <span class="text-sm">Generating content...</span>
-                                    </div>
-                                </div>
-                            `;
-                            
-                            // Simulate loading for 5 seconds
-                            setTimeout(() => {
-                                // Reset button
-                                runText.textContent = 'Run';
-                                runIcon.classList.remove('hidden');
-                                loadingIcon.classList.add('hidden');
-                                this.disabled = false;
-                                
-                                // Reset section (or replace with generated content)
-                                currentSection.innerHTML = originalContent;
-                                
-                                // Hide context menu
-                                contextMenu.classList.add('hidden');
-                            }, 5000);
-                        }
-                    });
-                }
-                
-                contextMenu.style.left = e.pageX + 'px';
-                contextMenu.style.top = e.pageY + 'px';
-                contextMenu.classList.remove('hidden');
-            }
-        });
-        
-        document.addEventListener('click', function(e) {
-            if (contextMenu && !contextMenu.contains(e.target)) {
-                contextMenu.classList.add('hidden');
-            }
-        });
+        // Context menu functionality is handled in JS files
     </script>
 
 </body>

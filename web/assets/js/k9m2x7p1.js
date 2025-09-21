@@ -141,7 +141,8 @@ function addCanvasSectionListeners() {
     const canvas = document.getElementById('design-canvas');
     if (canvas) {
         canvas.addEventListener('contextmenu', function(e) {
-            const section = e.target.closest('[data-section], section');
+            // Only show AI prompt menu for section elements with data-section
+            const section = e.target.closest('section[data-section]');
             if (section && section.dataset.section) {
                 showCanvasContextMenu(e, section);
             }

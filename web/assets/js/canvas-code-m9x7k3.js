@@ -382,60 +382,34 @@ function makeCanvasResponsive() {
     const canvas = document.getElementById('design-canvas');
     if (!canvas) return;
     
-    // Get current canvas width
-    const canvasWidth = canvas.offsetWidth;
-    
-    // Remove existing responsive styles
+    // Remove existing responsive overrides to allow natural responsiveness
     const existingStyle = document.getElementById('canvas-responsive-override');
     if (existingStyle) existingStyle.remove();
     
-    // Create media query override styles
+    // Get current canvas width
+    const canvasWidth = canvas.offsetWidth;
+    
+    // Create minimal responsive adjustments that work with natural CSS
     const style = document.createElement('style');
     style.id = 'canvas-responsive-override';
     
-    // Override media queries to match canvas width
-    let mediaQueries = '';
+    // Only add viewport simulation, let CSS media queries work naturally
+    style.textContent = `
+        #design-canvas {
+            width: ${canvasWidth}px;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        
+        /* Simulate viewport width for media queries */
+        @media (max-width: ${canvasWidth}px) {
+            #design-canvas {
+                /* Let natural responsive behavior work */
+            }
+        }
+    `;
     
-    if (canvasWidth <= 640) {
-        // Mobile: hide md+ and lg+ classes, show sm classes
-        mediaQueries = `
-            #design-canvas * { font-size: 14px !important; }
-            #design-canvas .md\\:block, #design-canvas .md\\:flex, #design-canvas .md\\:grid,
-            #design-canvas .lg\\:block, #design-canvas .lg\\:flex, #design-canvas .lg\\:grid { display: none !important; }
-            #design-canvas .sm\\:block { display: block !important; }
-            #design-canvas .sm\\:flex { display: flex !important; }
-            #design-canvas .sm\\:grid { display: grid !important; }
-            #design-canvas .sm\\:hidden { display: none !important; }
-            #design-canvas .hidden { display: block !important; }
-        `;
-    } else if (canvasWidth <= 1024) {
-        // Tablet: show sm and md classes, hide lg classes
-        mediaQueries = `
-            #design-canvas * { font-size: 15px !important; }
-            #design-canvas .lg\\:block, #design-canvas .lg\\:flex, #design-canvas .lg\\:grid { display: none !important; }
-            #design-canvas .md\\:block { display: block !important; }
-            #design-canvas .md\\:flex { display: flex !important; }
-            #design-canvas .md\\:grid { display: grid !important; }
-            #design-canvas .md\\:hidden { display: none !important; }
-        `;
-    } else {
-        // Desktop: show all responsive classes
-        mediaQueries = `
-            #design-canvas * { font-size: 16px !important; }
-            #design-canvas .lg\\:block { display: block !important; }
-            #design-canvas .lg\\:flex { display: flex !important; }
-            #design-canvas .lg\\:grid { display: grid !important; }
-            #design-canvas .lg\\:hidden { display: none !important; }
-        `;
-    }
-    
-    style.textContent = mediaQueries;
     document.head.appendChild(style);
-    
-    // Force reflow to apply styles
-    canvas.style.display = 'none';
-    canvas.offsetHeight; // Trigger reflow
-    canvas.style.display = '';
 }
 
 /**
@@ -691,7 +665,11 @@ function setupCanvasChangeListener() {
     // Watch for canvas width changes to update responsiveness
     const resizeObserver = new ResizeObserver(() => {
         if (canvas.innerHTML.trim() && !canvas.querySelector('.absolute.inset-0')) {
-            makeCanvasResponsive();
+            // Debounce responsive updates
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(() => {
+                makeCanvasResponsive();
+            }, 100);
         }
     });
     

@@ -581,6 +581,10 @@
         canvasCodeScript.src = 'assets/js/canvas-code-m9x7k3.js?v=' + Date.now();
         document.head.appendChild(canvasCodeScript);
         
+        const canvasEditorScript = document.createElement('script');
+        canvasEditorScript.src = 'assets/js/canvas-editor-x8k4m2.js?v=' + Date.now();
+        document.head.appendChild(canvasEditorScript);
+        
         // Device selector functionality
         document.addEventListener('DOMContentLoaded', function() {
             const dropdown = document.getElementById('device-dropdown');
